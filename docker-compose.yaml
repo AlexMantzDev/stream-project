@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  nginx:
+    build: ./web
+    ports:
+      - "1935:1935"
+      - "80:8080"
+    container_name: nginx
+    volumes:
+      - ./data:/tmp/hls
+
+  backend:
+    build: ./backend
+    container_name: backend
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    container_name: mongodb
+    volumes:
+      - mongo-data:/data/db
+    env_file:
+      - ./db/.env
+
+volumes:
+  mongo-data:
