@@ -1,5 +1,5 @@
 export enum LoginFormState {
-  login,
-  register,
-  userDetails,
+	login = "LOGIN",
+	register = "REGISTER",
+	userDetails = "DETAILS"
 }

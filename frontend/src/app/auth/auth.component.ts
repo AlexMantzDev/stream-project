@@ -1,25 +1,27 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { LoginFormState } from '../lib/enums/auth.enums';
-import { DbService } from '../db/db.service';
-import { FormsModule, NgForm } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, ViewChild } from "@angular/core";
+import { LoginFormState } from "../lib/enums/auth.enums";
+import { DbService } from "../db/db.service";
+import { FormsModule, NgForm } from "@angular/forms";
 
 @Component({
-  selector: 'app-auth',
-  standalone: true,
-  imports: [FormsModule],
-  templateUrl: './auth.component.html',
-  styleUrl: './auth.component.scss',
+	selector: "app-auth",
+	standalone: true,
+	imports: [FormsModule],
+	templateUrl: "./auth.component.html",
+	styleUrl: "./auth.component.scss"
 })
 export class AuthComponent {
-  constructor(public dbService: DbService) {}
+	public currentState: string = "LOGIN";
 
-  public formState = LoginFormState;
-  public currentState = this.formState.login;
-  changeFormState(state: LoginFormState) {
-    this.currentState = state;
-  }
+	constructor(public dbService: DbService) {}
 
-  onSubmit(form: NgForm) {
-    console.log(form);
-  }
+	changeFormState(newState: string) {
+		this.currentState = Object.values(LoginFormState).find(
+			(possibleState) => possibleState === newState
+		);
+	}
+
+	onSubmit(form: NgForm) {
+		console.log(form);
+	}
 }

@@ -6,21 +6,21 @@ const UserSchema = new Schema(
 	{
 		username: {
 			type: String,
-			required: true,
+			required: true
 		},
 		email: {
 			type: String,
-			required: true,
+			required: true
 		},
 		password: {
 			type: String,
-			required: true,
-		},
+			required: true
+		}
 	},
 	{ timestamps: true }
 );
 
-UserSchema.pre("save", async function (password) {
+UserSchema.pre("save", async function (this: any, password) {
 	const salt = await bcrypt.genSalt(10);
 	this.password = await bcrypt.hash(password, salt);
 });
@@ -34,7 +34,7 @@ UserSchema.methods.generateToken = function () {
 	const token = jwt.sign(
 		{
 			id: this._id,
-			username: this.username,
+			username: this.username
 		},
 		process.env.JWT_SECRET,
 		{ expiresIn: "1d" }

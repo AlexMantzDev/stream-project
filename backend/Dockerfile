@@ -6,6 +6,6 @@ COPY package.json .
 
 RUN npm i
 
-COPY . .
+COPY ./dist .
 
 CMD ["npm", "start"]
