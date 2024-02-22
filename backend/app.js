@@ -15,25 +15,27 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 // MIDDLEWARE
+app.use(express.json());
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.urlencoded({ extended: true }));
 
 // ROUTES
-app.use("/", express.static(path.join(__dirname, "/public")));
+app.use("/", express.static(path.join(__dirname, "/public/browser")));
 app.use("/watch", authMiddleware);
 app.use("/auth", authRoutes);
 app.use("/broadcast", broadcastRoutes);
 
-// SERVER INIT
+// METHODS
 async function start() {
 	try {
-		// await connectToMongo(process.env.MONGO_URI);
+		await connectToMongo(process.env.MONGO_URI);
 		app.listen(port, () => {
-			console.log(`listening on http://localhost:${port}`);
+			console.log(`listening on http://localhost:${port} ...`);
 		});
 	} catch (err) {
 		console.log(err);
 	}
 }
 
+// INIT
 start();

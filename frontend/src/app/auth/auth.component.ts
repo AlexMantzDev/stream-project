@@ -1,38 +1,25 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { LoginFormState } from '../lib/enums/auth.enums';
+import { DbService } from '../db/db.service';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './auth.component.html',
-  styleUrl: './auth.component.scss'
+  styleUrl: './auth.component.scss',
 })
-export class AuthComponent implements AfterViewInit {
-  @ViewChild("loginFormRef") loginFormRef: ElementRef;
+export class AuthComponent {
+  constructor(public dbService: DbService) {}
 
-  constructor() {}
-
-  loginForm: HTMLFormElement;
-
-  ngAfterViewInit(): void {
-    this.loginForm = this.loginFormRef.nativeElement;
-    this.loginForm.addEventListener("submit", onFormSubmit);
+  public formState = LoginFormState;
+  public currentState = this.formState.login;
+  changeFormState(state: LoginFormState) {
+    this.currentState = state;
   }
-  
-  async function onFormSubmit(event) {
-    event.preventDefault();
-    const data = new FormData(event.target);
-    const loginData = Object.fromEntries(data.entries());
-  
-    const options = {
-      method: "POST",
-      body: loginData,
-    };
-  
-    try {
-      const res = await fetch("http://mantztech.com/auth/login", options);
-    } catch (err) {
-      console.log(RangeError);
-    }
+
+  onSubmit(form: NgForm) {
+    console.log(form);
   }
 }

@@ -1,9 +1,17 @@
+// IMPORTS
 const mongoose = require("mongoose");
 
-function connectToMongo(url) {
-	console.log(`connecting to mongodb database at ${url} ...`);
-	const mongooseConnnection = mongoose.connect(url);
-	return mongooseConnnection;
+// METHODS
+function connectToMongo(uri) {
+	try {
+		console.log(`connecting to mongodb database at ${uri} ...`);
+		const mongooseConnnection = mongoose.connect(uri);
+		console.log("connected to mongodb.");
+		return mongooseConnnection;
+	} catch (err) {
+		console.log(err);
+	}
 }
 
+// EXPORTS
 module.exports = connectToMongo;
