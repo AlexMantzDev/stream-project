@@ -1,5 +1,3 @@
-TODOS:
-
 BACKEND TODO:
 
 - email verification
@@ -7,7 +5,7 @@ BACKEND TODO:
 - create dms db
 - implement fs to store previous streams
 
-  FRONTEND TODO:
+FRONTEND TODO:
 
 - direct messenger system
 - community profile page
@@ -20,7 +18,7 @@ BACKEND TODO:
 - browse active streams page
 - search users
 
-  NGINX TODO:
+NGINX TODO:
 
 - create TLS certs
 - implement HTTP/2
