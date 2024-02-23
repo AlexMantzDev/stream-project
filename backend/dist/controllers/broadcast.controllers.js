@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.connectStream = void 0;
 const connectStream = (req, res) => {
     const streamkey = req.body.key;
     if (streamkey !== process.env.OBS_SECRET) {
@@ -7,5 +8,5 @@ const connectStream = (req, res) => {
     }
     res.status(200).send();
 };
-module.exports = { connectStream };
+exports.connectStream = connectStream;
 //# sourceMappingURL=broadcast.controllers.js.map

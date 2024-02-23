@@ -1,25 +1,29 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-require("dotenv").config();
-const path = require("path");
-const express = require("express");
-const cors = require("cors");
-const connectToMongo = require("/lib/mongo-connect");
-const broadcastRoutes = require("./routes/broadcast.routes");
-const authRoutes = require("./routes/auth.routes");
-const authMiddleware = require("./middleware/auth.middleware");
-const app = express();
+const dotenv_1 = __importDefault(require("dotenv"));
+const path_1 = __importDefault(require("path"));
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const broadcast_routes_js_1 = require("./routes/broadcast.routes.js");
+const mongo_connect_js_1 = require("./lib/mongo-connect.js");
+const auth_routes_js_1 = require("./routes/auth.routes.js");
+const auth_middleware_js_1 = require("./middleware/auth.middleware.js");
+dotenv_1.default.config();
+const app = (0, express_1.default)();
 const port = process.env.PORT || 8080;
-app.use(express.json());
-app.use(cors({ credentials: true, origin: true }));
-app.use(express.urlencoded({ extended: true }));
-app.use("/", express.static(path.join(__dirname, "/public/browser")));
-app.use("/watch", authMiddleware);
-app.use("/auth", authRoutes);
-app.use("/broadcast", broadcastRoutes);
+app.use(express_1.default.json());
+app.use((0, cors_1.default)({ credentials: true, origin: true }));
+app.use(express_1.default.urlencoded({ extended: true }));
+app.use("/", express_1.default.static(path_1.default.join(__dirname, "/public/browser")));
+app.use("/watch", auth_middleware_js_1.authMiddleware);
+app.use("/auth", auth_routes_js_1.router);
+app.use("/broadcast", broadcast_routes_js_1.router);
 async function start() {
     try {
-        await connectToMongo(process.env.MONGO_URI);
+        await (0, mongo_connect_js_1.connectToMongo)(process.env.MONGO_URI);
         app.listen(port, () => {
             console.log(`listening on http://localhost:${port} ...`);
         });

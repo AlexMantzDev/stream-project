@@ -1,7 +1,7 @@
 // IMPORTS
 import dotenv from "dotenv";
 import path from "path";
-import express from "express";
+import express, { Express } from "express";
 import cors from "cors";
 import { router as broadcastRoutes } from "./routes/broadcast.routes.js";
 import { connectToMongo } from "./lib/mongo-connect.js";
@@ -12,7 +12,7 @@ import { authMiddleware } from "./middleware/auth.middleware.js";
 dotenv.config();
 
 // CONSTANTS
-const app = express();
+const app: Express = express();
 const port = process.env.PORT || 8080;
 
 // MIDDLEWARE

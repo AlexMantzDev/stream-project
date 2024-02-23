@@ -1,8 +1,9 @@
 // IMPORTS
 import { Users } from "../models/user.models.js";
+import { Request, Response } from "express";
 
 // CONTROLLERS
-export const registerUser = async (req, res) => {
+export const registerUser = async (req: Request, res: Response) => {
 	const { email, password1, password2, username } = req.body;
 	const emailTaken = await Users.findOne({ email });
 	if (emailTaken) {
@@ -35,7 +36,7 @@ export const registerUser = async (req, res) => {
 	res.status(200).json({ success: true, data: { user }, token });
 };
 
-export const loginUser = async (req, res) => {
+export const loginUser = async (req: Request, res: Response) => {
 	const { email, password } = req.body;
 	if (!email || !password) {
 		return res.status(400).json({
@@ -61,7 +62,7 @@ export const loginUser = async (req, res) => {
 	res.status(200).json({ success: true, data: { user }, token });
 };
 
-export const checkUser = async (req, res) => {
+export const checkUser = async (req: Request, res: Response) => {
 	const { field, param } = req.body;
 	switch (field) {
 		case "username": {

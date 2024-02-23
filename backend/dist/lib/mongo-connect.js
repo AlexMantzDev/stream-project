@@ -1,10 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose = require("mongoose");
+exports.connectToMongo = void 0;
+const mongoose_1 = __importDefault(require("mongoose"));
 function connectToMongo(uri) {
     try {
         console.log(`connecting to mongodb database at ${uri} ...`);
-        const mongooseConnnection = mongoose.connect(uri);
+        const mongooseConnnection = mongoose_1.default.connect(uri);
         console.log("connected to mongodb.");
         return mongooseConnnection;
     }
@@ -12,5 +16,5 @@ function connectToMongo(uri) {
         console.log(err);
     }
 }
-module.exports = connectToMongo;
+exports.connectToMongo = connectToMongo;
 //# sourceMappingURL=mongo-connect.js.map

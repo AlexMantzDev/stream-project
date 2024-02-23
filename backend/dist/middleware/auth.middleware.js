@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const jwt = require("jsonwebtoken");
+exports.authMiddleware = void 0;
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 async function authMiddleware(req, res, next) {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -8,10 +12,10 @@ async function authMiddleware(req, res, next) {
     }
     const bearerToken = authHeader.split(" ")[1];
     try {
-        const verifiedJWT = jwt.verify(bearerToken, process.env.JWT_SECRET);
+        const verifiedJWT = jsonwebtoken_1.default.verify(bearerToken, process.env.JWT_SECRET);
         req.user = {
             id: verifiedJWT.id,
-            username: verifiedJWT.username,
+            username: verifiedJWT.username
         };
         next();
     }
@@ -19,5 +23,5 @@ async function authMiddleware(req, res, next) {
         res.status(500).send();
     }
 }
-module.exports = authMiddleware;
+exports.authMiddleware = authMiddleware;
 //# sourceMappingURL=auth.middleware.js.map

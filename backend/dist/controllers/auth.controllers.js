@@ -1,16 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Users = require("../models/user.models");
+exports.checkUser = exports.loginUser = exports.registerUser = void 0;
+const user_models_js_1 = require("../models/user.models.js");
 const registerUser = async (req, res) => {
     const { email, password1, password2, username } = req.body;
-    const emailTaken = await Users.fineOne({ email });
+    const emailTaken = await user_models_js_1.Users.findOne({ email });
     if (emailTaken) {
         return res.status(400).json({
             success: false,
             data: { message: "invalid username or password" }
         });
     }
-    const usernameTaken = await Users.findOne({ username });
+    const usernameTaken = await user_models_js_1.Users.findOne({ username });
     if (usernameTaken) {
         return res.status(400).json({
             success: false,
@@ -29,10 +30,11 @@ const registerUser = async (req, res) => {
             data: { message: "passwords do not match" }
         });
     }
-    const user = await Users.create({ email, password1, username });
+    const user = await user_models_js_1.Users.create({ email, password1, username });
     const token = user.generateToken();
     res.status(200).json({ success: true, data: { user }, token });
 };
+exports.registerUser = registerUser;
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -41,7 +43,7 @@ const loginUser = async (req, res) => {
             data: { message: "invalid username or password" }
         });
     }
-    const user = await Users.findOne({ email });
+    const user = await user_models_js_1.Users.findOne({ email });
     if (!user) {
         return res.status(400).json({
             success: false,
@@ -58,6 +60,7 @@ const loginUser = async (req, res) => {
     const token = user.generateToken();
     res.status(200).json({ success: true, data: { user }, token });
 };
+exports.loginUser = loginUser;
 const checkUser = async (req, res) => {
     const { field, param } = req.body;
     switch (field) {
@@ -65,7 +68,7 @@ const checkUser = async (req, res) => {
             if (param === "" || undefined) {
                 return res.status(400).json({ message: "invalid field" });
             }
-            const usernameTaken = await Users.findOne({ username: param });
+            const usernameTaken = await user_models_js_1.Users.findOne({ username: param });
             if (usernameTaken) {
                 return res.status(400).json({ message: "taken" });
             }
@@ -78,5 +81,5 @@ const checkUser = async (req, res) => {
         }
     }
 };
-module.exports = { registerUser, loginUser, checkUser };
+exports.checkUser = checkUser;
 //# sourceMappingURL=auth.controllers.js.map
