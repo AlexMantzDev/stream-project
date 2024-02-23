@@ -1,5 +1,5 @@
 BACKEND TODO:
-
+- continue getting ts-node ironed out
 - email verification
 - 2FA - create videos db
 - create dms db
