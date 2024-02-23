@@ -1,14 +1,15 @@
-// CONFIG
-require("dotenv").config();
-
 // IMPORTS
-const path = require("path");
-const express = require("express");
-const cors = require("cors");
-const connectToMongo = require("/lib/mongo-connect");
-const broadcastRoutes = require("./routes/broadcast.routes");
-const authRoutes = require("./routes/auth.routes");
-const authMiddleware = require("./middleware/auth.middleware");
+import dotenv from "dotenv";
+import path from "path";
+import express from "express";
+import cors from "cors";
+import { router as broadcastRoutes } from "./routes/broadcast.routes.js";
+import { connectToMongo } from "./lib/mongo-connect.js";
+import { router as authRoutes } from "./routes/auth.routes.js";
+import { authMiddleware } from "./middleware/auth.middleware.js";
+
+// CONFIG
+dotenv.config();
 
 // CONSTANTS
 const app = express();

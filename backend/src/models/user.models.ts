@@ -1,8 +1,16 @@
-const { Schema, model } = require("mongoose");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import { Schema, Document, model } from "mongoose";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-const UserSchema = new Schema(
+export interface IUserDoc extends Document {
+	username: string;
+	email: string;
+	password: string;
+	comparePass(password: string): boolean;
+	generateToken(): any;
+}
+
+const UserSchema = new Schema<IUserDoc>(
 	{
 		username: {
 			type: String,
@@ -42,4 +50,4 @@ UserSchema.methods.generateToken = function () {
 	return token;
 };
 
-module.exports = model("User", UserSchema);
+export const Users = model<IUserDoc>("User", UserSchema);

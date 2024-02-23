@@ -1,9 +1,8 @@
 // IMPORTS
-const router = require("express").Router();
-const { connectStream } = require("../controllers/broadcast.controllers");
+import express from "express";
+import { connectStream } from "../controllers/broadcast.controllers.js";
+
+export const router = express.Router();
 
 // METHODS
 router.post("/", connectStream);
-
-// EXPORTS
-module.exports = router;

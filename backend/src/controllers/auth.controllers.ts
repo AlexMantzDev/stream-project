@@ -1,10 +1,10 @@
 // IMPORTS
-const Users = require("../models/user.models");
+import { Users } from "../models/user.models.js";
 
 // CONTROLLERS
-const registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
 	const { email, password1, password2, username } = req.body;
-	const emailTaken = await Users.fineOne({ email });
+	const emailTaken = await Users.findOne({ email });
 	if (emailTaken) {
 		return res.status(400).json({
 			success: false,
@@ -35,7 +35,7 @@ const registerUser = async (req, res) => {
 	res.status(200).json({ success: true, data: { user }, token });
 };
 
-const loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
 	const { email, password } = req.body;
 	if (!email || !password) {
 		return res.status(400).json({
@@ -61,7 +61,7 @@ const loginUser = async (req, res) => {
 	res.status(200).json({ success: true, data: { user }, token });
 };
 
-const checkUser = async (req, res) => {
+export const checkUser = async (req, res) => {
 	const { field, param } = req.body;
 	switch (field) {
 		case "username": {
@@ -83,6 +83,3 @@ const checkUser = async (req, res) => {
 		}
 	}
 };
-
-// EXPORTS
-module.exports = { registerUser, loginUser, checkUser };

@@ -1,8 +1,8 @@
 // IMPORTS
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 // METHODS
-function connectToMongo(uri) {
+export function connectToMongo(uri) {
 	try {
 		console.log(`connecting to mongodb database at ${uri} ...`);
 		const mongooseConnnection = mongoose.connect(uri);
@@ -12,6 +12,3 @@ function connectToMongo(uri) {
 		console.log(err);
 	}
 }
-
-// EXPORTS
-module.exports = connectToMongo;

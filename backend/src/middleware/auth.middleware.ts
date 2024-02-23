@@ -1,8 +1,8 @@
 // IMPORTS
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 // MIDDLEWARE
-async function authMiddleware(req, res, next) {
+export async function authMiddleware(req, res, next) {
 	const authHeader = req.headers.authorization;
 
 	if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -15,13 +15,10 @@ async function authMiddleware(req, res, next) {
 		const verifiedJWT = jwt.verify(bearerToken, process.env.JWT_SECRET);
 		req.user = {
 			id: verifiedJWT.id,
-			username: verifiedJWT.username,
+			username: verifiedJWT.username
 		};
 		next();
 	} catch (err) {
 		res.status(500).send();
 	}
 }
-
-// EXPORTS
-module.exports = authMiddleware;
