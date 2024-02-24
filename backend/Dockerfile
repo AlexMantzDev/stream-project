@@ -1,4 +1,4 @@
-FROM node
+FROM node:latest
 
 WORKDIR /usr/src/app
 
@@ -8,4 +8,6 @@ RUN npm i
 
 COPY ./dist .
 
-CMD ["npm", "start"]
+EXPOSE 8080
+
+CMD ["npm", "run", "serve"]

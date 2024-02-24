@@ -21,8 +21,7 @@ app.use(cors({ credentials: true, origin: true }));
 app.use(express.urlencoded({ extended: true }));
 
 // ROUTES
-app.use("/", express.static(path.join(__dirname, "/public/browser")));
-app.use("/watch", authMiddleware);
+app.use("/", express.static(path.join(__dirname, "../public/browser")));
 app.use("/auth", authRoutes);
 app.use("/broadcast", broadcastRoutes);
 
@@ -31,7 +30,7 @@ async function start() {
 	try {
 		await connectToMongo(process.env.MONGO_URI);
 		app.listen(port, () => {
-			console.log(`listening on http://localhost:${port} ...`);
+			console.log(`listening on http://0.0.0.0:${port} ...`);
 		});
 	} catch (err) {
 		console.log(err);

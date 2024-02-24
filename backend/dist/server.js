@@ -10,22 +10,20 @@ const cors_1 = __importDefault(require("cors"));
 const broadcast_routes_js_1 = require("./routes/broadcast.routes.js");
 const mongo_connect_js_1 = require("./lib/mongo-connect.js");
 const auth_routes_js_1 = require("./routes/auth.routes.js");
-const auth_middleware_js_1 = require("./middleware/auth.middleware.js");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 8080;
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({ credentials: true, origin: true }));
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use("/", express_1.default.static(path_1.default.join(__dirname, "/public/browser")));
-app.use("/watch", auth_middleware_js_1.authMiddleware);
+app.use("/", express_1.default.static(path_1.default.join(__dirname, "../public/browser")));
 app.use("/auth", auth_routes_js_1.router);
 app.use("/broadcast", broadcast_routes_js_1.router);
 async function start() {
     try {
         await (0, mongo_connect_js_1.connectToMongo)(process.env.MONGO_URI);
         app.listen(port, () => {
-            console.log(`listening on http://localhost:${port} ...`);
+            console.log(`listening on http://0.0.0.0:${port} ...`);
         });
     }
     catch (err) {
