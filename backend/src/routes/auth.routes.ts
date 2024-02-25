@@ -4,7 +4,7 @@ import { registerUser, loginUser, checkUser } from "../controllers/auth.controll
 
 export const router = express.Router();
 
-// METHODS
+// ROUTES
 router.post("/checkuser", checkUser);
 router.post("/register", registerUser);
 router.post("/login", loginUser);

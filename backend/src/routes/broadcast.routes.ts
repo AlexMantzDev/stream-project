@@ -4,5 +4,5 @@ import { connectStream } from "../controllers/broadcast.controllers.js";
 
 export const router = express.Router();
 
-// METHODS
+// ROUTES
 router.post("/", connectStream);

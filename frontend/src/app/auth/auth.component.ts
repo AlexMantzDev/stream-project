@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from "@angular/core";
-import { LoginFormState } from "../lib/enums/auth.enums";
-import { DbService } from "../db/db.service";
+import { LoginFormState } from "../lib/enums/auth-form.enums";
+import { DbService } from "../shared/services/db/db.service";
 import { FormsModule, NgForm } from "@angular/forms";
 
 @Component({

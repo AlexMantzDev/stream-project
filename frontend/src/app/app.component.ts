@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { AuthComponent } from "./auth/auth.component";
-import { WatchComponent } from "./watch/watch.component";
+import { WatchComponent } from "./core/watch/watch.component";
 
 @Component({
 	selector: "app-root",
