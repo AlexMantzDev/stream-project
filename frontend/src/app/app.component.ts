@@ -1,12 +1,11 @@
 import { Component } from "@angular/core";
-import { RouterOutlet } from "@angular/router";
-import { AuthComponent } from "./auth/auth.component";
-import { WatchComponent } from "./core/watch/watch.component";
+import { LandingComponent } from "./core/features/landing/landing.component";
+import { NavComponent } from "./shared/components/nav/nav.component";
 
 @Component({
 	selector: "app-root",
 	standalone: true,
-	imports: [RouterOutlet, AuthComponent, WatchComponent],
+	imports: [LandingComponent, NavComponent],
 	templateUrl: "./app.component.html",
 	styleUrl: "./app.component.scss"
 })
