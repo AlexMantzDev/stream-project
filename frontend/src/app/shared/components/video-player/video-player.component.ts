@@ -15,7 +15,7 @@ export class VideoPlayer implements AfterViewInit {
 	constructor() {}
 
 	videoPlayer: HTMLMediaElement;
-	videoSrc: string = "http://mantztech.com/hls/test.m3u8";
+	videoSrc: string = "https://watch.mantztech.com/hls/test.m3u8";
 
 	ngAfterViewInit(): void {
 		this.videoPlayer = this.videoRef.nativeElement;

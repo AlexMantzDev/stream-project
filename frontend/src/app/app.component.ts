@@ -1,12 +1,12 @@
 import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { AuthComponent } from "./auth/auth.component";
-import { WatchComponent } from "./core/watch/watch.component";
+import { VideoPlayer } from "./shared/components/video-player/video-player.component";
 
 @Component({
 	selector: "app-root",
 	standalone: true,
-	imports: [RouterOutlet, AuthComponent, WatchComponent],
+	imports: [RouterOutlet, AuthComponent, VideoPlayer],
 	templateUrl: "./app.component.html",
 	styleUrl: "./app.component.scss"
 })

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { debounce } from "../../../lib/utils/debounce.utils";
+import { debounce } from "../../lib/utils/debounce.utils";
 
 @Injectable({
 	providedIn: "root"
