@@ -5,7 +5,7 @@ import express, { Express } from "express";
 import cors from "cors";
 import { Server } from "socket.io";
 import { createServer } from "http";
-import { router as chatRoutes } from "./routes/chat.routes";
+// import { router as chatRoutes } from "./routes/chat.routes";
 import { router as broadcastRoutes } from "./routes/broadcast.routes.js";
 import { connectToMongo } from "./lib/mongo-connect.js";
 import { router as authRoutes } from "./routes/auth.routes.js";
@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // ROUTES
 app.use("/", express.static(path.join(__dirname, "../public/browser")));
-app.use("/chat", chatRoutes);
+// app.use("/chat", chatRoutes);
 app.use("/auth", authRoutes);
 app.use("/broadcast", broadcastRoutes);
 
