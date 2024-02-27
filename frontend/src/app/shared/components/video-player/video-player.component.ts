@@ -9,7 +9,7 @@ import Hls from "hls.js";
 	templateUrl: "./video-player.component.html",
 	styleUrl: "./video-player.component.scss"
 })
-export class VideoPlayer implements AfterViewInit {
+export class VideoPlayerComponent implements AfterViewInit {
 	@ViewChild("videoRef") videoRef: ElementRef;
 
 	constructor() {}

@@ -1,0 +1,37 @@
+<div class="card">
+	<h2>Register</h2>
+	<form id="register-form" class="form">
+		<div class="row">
+			<label for="username">Username:</label>
+			<input
+				type="text"
+				id="username"
+				name="username"
+				class="form-control"
+				(ngModelChange)="this.dbService.checkUser('username', usernameInput.value)"
+				#usernameInput
+			/>
+		</div>
+		<div class="row">
+			<label for="email">Email:</label>
+			<input type="email" id="email" name="email" class="form-control" ngModel />
+		</div>
+		<div class="row">
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password" class="form-control" ngModel />
+		</div>
+		<div class="row">
+			<label for="confirm-password">Repeat Password:</label>
+			<input
+				type="password"
+				id="confirm-password"
+				name="confirm-password"
+				class="form-control"
+			/>
+		</div>
+		<div class="row">
+			<button type="submit" class="btn">Register</button>
+		</div>
+	</form>
+	<div class="row"><a (click)="authComponent.changeFormState('LOGIN')">Login</a></div>
+</div>

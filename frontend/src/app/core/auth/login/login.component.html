@@ -1,0 +1,17 @@
+<div class="card">
+	<h2>Login</h2>
+	<form id="login-form" class="form">
+		<div class="row">
+			<label for="email">Email:</label>
+			<input type="email" id="email" name="email" class="form-control" ngModel />
+		</div>
+		<div class="row">
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password" class="form-control" ngModel />
+		</div>
+		<div class="row">
+			<button type="submit" class="btn">Login</button>
+		</div>
+	</form>
+	<div class="row"><a (click)="authComponent.changeFormState('REGISTER')">Register</a></div>
+</div>
