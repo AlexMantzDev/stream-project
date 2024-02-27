@@ -6,29 +6,51 @@ export interface IUserDoc extends Document {
 	username: string;
 	email: string;
 	password: string;
+	role: String;
+	verificationToken: String;
+	isVerified: Boolean;
+	verified: Number;
 	comparePass(password: string): boolean;
 	generateToken(): any;
 }
 
-const UserSchema = new Schema<IUserDoc>(
-	{
-		username: {
-			type: String,
-			required: true
-		},
-		email: {
-			type: String,
-			required: true
-		},
-		password: {
-			type: String,
-			required: true
-		}
+const UserSchema = new Schema<IUserDoc>({
+	username: {
+		type: String,
+		required: true,
+		minlength: 4,
+		maxlength: 32,
+		unique: true
 	},
-	{ timestamps: true }
-);
+	email: {
+		type: String,
+		required: true,
+		match: [
+			/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+			"please use a valid email address"
+		],
+		unique: true
+	},
+	password: {
+		type: String,
+		required: [true, "please provide a password"],
+		minlength: 16
+	},
+	role: {
+		type: String,
+		enum: ["admin", "user"],
+		default: "user"
+	},
+	verificationToken: String,
+	isVerified: {
+		type: Boolean,
+		default: false
+	},
+	verified: Date
+});
 
 UserSchema.pre("save", async function (this: any, password) {
+	if (!this.isModified("password")) return;
 	const salt = await bcrypt.genSalt(10);
 	this.password = await bcrypt.hash(password, salt);
 });
@@ -45,7 +67,7 @@ UserSchema.methods.generateToken = function () {
 			username: this.username
 		},
 		process.env.JWT_SECRET,
-		{ expiresIn: "1d" }
+		{ expiresIn: process.env.JWT_LIFETIME }
 	);
 	return token;
 };

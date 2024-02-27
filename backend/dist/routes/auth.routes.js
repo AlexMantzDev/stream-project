@@ -10,4 +10,5 @@ exports.router = express_1.default.Router();
 exports.router.post("/checkuser", auth_controllers_js_1.checkUser);
 exports.router.post("/register", auth_controllers_js_1.registerUser);
 exports.router.post("/login", auth_controllers_js_1.loginUser);
+exports.router.post("/verify", auth_controllers_js_1.verifyEmail);
 //# sourceMappingURL=auth.routes.js.map

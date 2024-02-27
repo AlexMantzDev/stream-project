@@ -1,6 +1,11 @@
 // IMPORTS
 import express from "express";
-import { registerUser, loginUser, checkUser } from "../controllers/auth.controllers.js";
+import {
+	registerUser,
+	loginUser,
+	checkUser,
+	verifyEmail
+} from "../controllers/auth.controllers.js";
 
 export const router = express.Router();
 
@@ -8,3 +13,4 @@ export const router = express.Router();
 router.post("/checkuser", checkUser);
 router.post("/register", registerUser);
 router.post("/login", loginUser);
+router.post("/verify", verifyEmail);
