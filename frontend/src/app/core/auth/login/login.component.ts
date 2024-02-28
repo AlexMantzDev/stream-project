@@ -1,13 +1,14 @@
 import { Component } from "@angular/core";
-import { AuthComponent } from "../auth.component";
+import { RouterLink } from "@angular/router";
+import { RegisterComponent } from "../register/register.component";
 
 @Component({
 	selector: "app-login",
 	standalone: true,
-	imports: [],
+	imports: [RouterLink, RegisterComponent],
 	templateUrl: "./login.component.html",
 	styleUrl: "./login.component.scss"
 })
 export class LoginComponent {
-	constructor(public authComponent: AuthComponent) {}
+	constructor() {}
 }

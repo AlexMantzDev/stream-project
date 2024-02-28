@@ -1,4 +1,4 @@
-<div class="card">
+<div>
 	<h2>Login</h2>
 	<form id="login-form" class="form">
 		<div class="row">
@@ -13,5 +13,7 @@
 			<button type="submit" class="btn">Login</button>
 		</div>
 	</form>
-	<div class="row"><a (click)="authComponent.changeFormState('REGISTER')">Register</a></div>
+	<div class="row">
+		<a routerLink="/auth/register">Register</a>
+	</div>
 </div>

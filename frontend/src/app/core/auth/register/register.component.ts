@@ -1,18 +1,41 @@
 import { Component } from "@angular/core";
-import { DbService } from "../../../shared/services/db/db.service";
-import { FormsModule } from "@angular/forms";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Router, RouterLink } from "@angular/router";
 import { AuthComponent } from "../auth.component";
+
+import { DbService } from "../../../shared/services/db/db.service";
 
 @Component({
 	selector: "app-register",
 	standalone: true,
-	imports: [FormsModule],
+	imports: [ReactiveFormsModule, RouterLink],
 	templateUrl: "./register.component.html",
 	styleUrl: "./register.component.scss"
 })
 export class RegisterComponent {
+	// Constants
+	public registerUserForm: FormGroup;
+
+	// Constructor
 	constructor(
 		public dbService: DbService,
-		public authComponent: AuthComponent
+		public authComponent: AuthComponent,
+		public router: Router
 	) {}
+
+	// Lifecycle
+	ngOnInit(): void {
+		this.registerUserForm = new FormGroup({
+			username: new FormControl(null, Validators.required),
+			email: new FormControl(null, [Validators.required, Validators.email]),
+			password1: new FormControl(null),
+			password2: new FormControl(null)
+		});
+	}
+
+	// Methods
+	onSubmit() {
+		console.log(this.registerUserForm);
+		this.router.navigate(["auth", "verify"]);
+	}
 }

@@ -19,7 +19,6 @@ const port = process.env.EXPRESS_PORT || 8080;
 
 // MIDDLEWARE
 app.use(express.json());
-app.use(cors({ credentials: true, origin: true }));
 app.use(express.urlencoded({ extended: true }));
 
 // ROUTES

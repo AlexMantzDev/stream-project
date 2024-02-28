@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { debounce } from "../../lib/utils/debounce.utils";
+import { environment } from "../../../../environments/env";
 
 @Injectable({
 	providedIn: "root"
@@ -17,7 +18,7 @@ export class DbService {
 	}
 
 	checkUser(field: string, userInput: string) {
-		const url: string = "http://mantztech.com/auth/checkuser";
+		const url: string = `${environment.origin}/auth/checkuser`;
 		const body: object = { field: field, param: userInput };
 		this.debouncedHttp(url, body);
 	}
