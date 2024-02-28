@@ -18,7 +18,7 @@ export class DbService {
 	}
 
 	checkUser(field: string, userInput: string) {
-		const url: string = `${environment.origin}/auth/checkuser`;
+		const url: string = `https://${environment.origin}/auth/checkuser`;
 		const body: object = { field: field, param: userInput };
 		this.debouncedHttp(url, body);
 	}

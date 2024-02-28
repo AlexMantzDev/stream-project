@@ -2,10 +2,10 @@ import { Component } from "@angular/core";
 import { RouterLink } from "@angular/router";
 
 @Component({
-	selector: "app-verify",
+	selector: "app-not-found",
 	standalone: true,
 	imports: [RouterLink],
-	templateUrl: "./verify.component.html",
-	styleUrl: "./verify.component.scss"
+	templateUrl: "./not-found.component.html",
+	styleUrl: "./not-found.component.scss"
 })
-export class VerifyComponent {}
+export class NotFoundComponent {}

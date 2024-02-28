@@ -1,3 +1,3 @@
 export const environment = {
-	origin: "http://mantztech.com"
+	origin: "mantztech.com"
 };

@@ -18,23 +18,24 @@ const app: Express = express();
 const port = process.env.EXPRESS_PORT || 8080;
 
 // MIDDLEWARE
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ROUTES
-app.use("/", express.static(path.join(__dirname, "../public/browser")));
 // app.use("/chat", chatRoutes);
 app.use("/auth", authRoutes);
 app.use("/broadcast", broadcastRoutes);
+app.use("/", express.static(path.join(__dirname, "../public/browser")));
 
 // METHODS
 async function start() {
 	try {
 		await connectToMongo(process.env.MONGO_URI);
 		app.listen(port, () => {
-			console.log(`listening on http://localhost:${port} ...`);
+			console.log(`listening on http://0.0.0.0:${port} ...`);
 		});
-		startSocketServer();
+		// startSocketServer();
 	} catch (err) {
 		console.log(err);
 	}
