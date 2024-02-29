@@ -7,6 +7,7 @@ import { sendVerificationEmail } from "../lib/utils/nodemailer.js";
 // CONTROLLERS
 export const registerUser = async (req: Request, res: Response) => {
 	const { email, password1, password2, username } = req.body;
+
 	const emailTaken = await Users.findOne({ email });
 	if (emailTaken) {
 		return res.status(400).json({
