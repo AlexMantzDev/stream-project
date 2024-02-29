@@ -11,13 +11,14 @@ export const attachCookies = ({ res, user, refreshToken }) => {
 	const accessTokenJWT = createJWT({ payload: { user } });
 	const refreshTokenJWT = createJWT({ payload: { user, refreshToken } });
 
+	const oneHour = 1000 * 60 * 60;
 	const oneDay = 1000 * 60 * 60 * 24;
 
 	res.cookie("accessToken", accessTokenJWT, {
 		httpOnly: true,
+		expires: new Date(Date.now() + oneHour),
 		secure: process.env.NODE_ENV === "production",
-		signed: true,
-		maxAge: 1000
+		signed: true
 	});
 
 	res.cookie("refreshToken", refreshTokenJWT, {

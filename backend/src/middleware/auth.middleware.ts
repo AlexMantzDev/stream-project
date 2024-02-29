@@ -4,7 +4,7 @@ import { Token } from "../models/token.model";
 import { attachCookies } from "../lib/utils/jwt";
 
 // MIDDLEWARE
-export async function authenticateUser(req: Request, res: Response, next) {
+export async function authenticateUser(req, res, next) {
 	const { refreshToken, accessToken } = req.signedCookies;
 
 	try {
@@ -27,7 +27,7 @@ export async function authenticateUser(req: Request, res: Response, next) {
 			});
 		} else {
 			attachCookies({
-				res: Response,
+				res,
 				user: payload.user,
 				refreshToken: existingToken.refreshToken
 			});

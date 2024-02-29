@@ -2,8 +2,8 @@
 import { Users } from "../models/user.models.js";
 import { Token } from "../models/token.model.js";
 import { Request, Response } from "express";
-import crypto from "crypto";
-import { sendVerificationEmail } from "../lib/utils/nodemailer.js";
+import crypto, { createHash } from "crypto";
+import { sendResetPasswordEmail, sendVerificationEmail } from "../lib/utils/nodemailer.js";
 import { attachCookies } from "../lib/utils/jwt.js";
 
 // CONTROLLERS
@@ -145,6 +145,55 @@ export const checkUser = async (req: Request, res: Response) => {
 		default: {
 			return res.status(400).json({ message: "invalid field" });
 		}
+	}
+};
+
+export const forgotPass = async (req: Request, res: Response) => {
+	const { email } = req.body;
+	if (!email) {
+		res.status(400).json({ success: false, data: { message: "email not valid" } });
+	}
+	const user = await Users.findOne({ email });
+	if (user) {
+		const passwordToken = crypto.randomBytes(70).toString("hex");
+		await sendResetPasswordEmail({
+			username: user.username,
+			email: user.email,
+			passwordToken: passwordToken,
+			origin: `https://${process.env.ORIGIN}`
+		});
+		const tenMinutes = 1000 * 60 * 10;
+		const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes);
+
+		user.passwordToken = createHash(passwordToken);
+		user.passwordTokenExpirationDate = passwordTokenExpirationDate;
+		await user.save();
+	}
+	res.status(200).json({ success: true, data: { message: "check email for reset link" } });
+};
+
+export const resetPass = async (req: Request, res: Response) => {
+	const { token, email, password } = req.body;
+	if (!token || !email || !password) {
+		res.status(400).json({ success: false, data: { message: "please provide all values" } });
+	}
+	const user = await Users.findOne({ email });
+	if (user && user.passwordToken && user.passwordTokenExpirationDate) {
+		const currentDate = new Date();
+		if (
+			user.passwordToken === createHash(token) &&
+			user.passwordTokenExpirationDate > currentDate
+		) {
+			user.password = password;
+			user.passwordToken = null;
+			user.passwordTokenExpirationDate = null;
+			await user.save();
+			res.status(200).json({ success: true, data: { message: "password reset success" } });
+		} else {
+			res.status(400).json({ success: false, data: { message: "invalid token" } });
+		}
+	} else {
+		res.status(400).json({ success: false, data: { message: "please try again" } });
 	}
 };
 
