@@ -3,10 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyEmail = exports.checkUser = exports.loginUser = exports.registerUser = void 0;
+exports.verifyEmail = exports.checkUser = exports.logoutUser = exports.loginUser = exports.registerUser = void 0;
 const user_models_js_1 = require("../models/user.models.js");
+const token_model_js_1 = require("../models/token.model.js");
 const crypto_1 = __importDefault(require("crypto"));
 const nodemailer_js_1 = require("../lib/utils/nodemailer.js");
+const jwt_js_1 = require("../lib/utils/jwt.js");
 const registerUser = async (req, res) => {
     const { email, password1, password2, username } = req.body;
     const emailTaken = await user_models_js_1.Users.findOne({ email });
@@ -77,9 +79,43 @@ const loginUser = async (req, res) => {
         });
     }
     const tokenUser = { name: user.username, userId: user._id, role: user.role };
+    let refreshToken = "";
+    const existingToken = await token_model_js_1.Token.findOne({ user: user._id });
+    if (existingToken) {
+        const { isValid } = existingToken;
+        if (!isValid) {
+            return res.status(401).json({
+                success: false,
+                data: { message: "invalid credentials" }
+            });
+        }
+        refreshToken = existingToken.refreshToken;
+        (0, jwt_js_1.attachCookies)({ res, user: tokenUser, refreshToken });
+        res.status(200).json({ success: true, data: { user: tokenUser } });
+        return;
+    }
+    refreshToken = crypto_1.default.randomBytes(40).toString("hex");
+    const userAgent = req.headers["user-agent"];
+    const ip = req.ip;
+    const userToken = { refreshToken, ip, userAgent, user: user._id };
+    await token_model_js_1.Token.create(userToken);
+    (0, jwt_js_1.attachCookies)({ res, user: tokenUser, refreshToken });
     res.status(200).json({ success: true, data: { user: tokenUser } });
 };
 exports.loginUser = loginUser;
+const logoutUser = async (req, res) => {
+    await token_model_js_1.Token.findOneAndDelete({ user: req.user.userId });
+    res.cookie("accessToken", "logout", {
+        httpOnly: true,
+        expires: new Date(Date.now())
+    });
+    res.cookie("refreshToken", "logout", {
+        httpOnly: true,
+        expires: new Date(Date.now())
+    });
+    res.status(200).json({ success: true, data: { message: "user logged out" } });
+};
+exports.logoutUser = logoutUser;
 const checkUser = async (req, res) => {
     const { field, param } = req.body;
     switch (field) {

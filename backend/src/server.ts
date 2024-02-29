@@ -8,7 +8,7 @@ import { startSocketServer } from "./lib/utils/socket-server.js";
 import { router as broadcastRoutes } from "./routes/broadcast.routes.js";
 import { connectToMongo } from "./lib/utils/mongo-connect.js";
 import { router as authRoutes } from "./routes/auth.routes.js";
-import { authMiddleware } from "./middleware/auth.middleware.js";
+import cookieParser from "cookie-parser";
 
 // CONFIG
 dotenv.config();
@@ -19,6 +19,7 @@ const port = process.env.EXPRESS_PORT || 8080;
 
 // MIDDLEWARE
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

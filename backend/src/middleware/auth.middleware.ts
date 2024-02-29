@@ -1,24 +1,54 @@
 // IMPORTS
-import jwt from "jsonwebtoken";
+import { isTokenValid } from "../lib/utils/jwt";
+import { Token } from "../models/token.model";
+import { attachCookies } from "../lib/utils/jwt";
 
 // MIDDLEWARE
-export async function authMiddleware(req, res, next) {
-	const authHeader = req.headers.authorization;
-
-	if (!authHeader || !authHeader.startsWith("Bearer ")) {
-		return res.status(401).send();
-	}
-
-	const bearerToken = authHeader.split(" ")[1];
+export async function authenticateUser(req: Request, res: Response, next) {
+	const { refreshToken, accessToken } = req.signedCookies;
 
 	try {
-		const verifiedJWT = jwt.verify(bearerToken, process.env.JWT_SECRET);
-		req.user = {
-			id: verifiedJWT.id,
-			username: verifiedJWT.username
-		};
-		next();
+		if (accessToken) {
+			const payload = isTokenValid(accessToken);
+			req.user = payload.user;
+			return next();
+		}
+		const payload = isTokenValid(refreshToken);
+		const existingToken = await Token.findOne({
+			user: payload.user.userId,
+			refreshToken: payload.refreshToken
+		});
+		if (!existingToken || !existingToken?.isValid) {
+			res.status(401).json({
+				success: false,
+				data: {
+					message: "authentication invalid"
+				}
+			});
+		} else {
+			attachCookies({
+				res: Response,
+				user: payload.user,
+				refreshToken: existingToken.refreshToken
+			});
+			req.user = payload.user;
+			next();
+		}
 	} catch (err) {
 		res.status(500).send();
 	}
 }
+
+export const authorizePermissions = (...roles) => {
+	return (req, res, next) => {
+		if (!roles.includes(req.user.role)) {
+			return res.status(401).json({
+				success: false,
+				data: {
+					message: "unauthorized to access this route"
+				}
+			});
+		}
+		next();
+	};
+};

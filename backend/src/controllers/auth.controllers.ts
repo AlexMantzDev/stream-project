@@ -1,8 +1,10 @@
 // IMPORTS
 import { Users } from "../models/user.models.js";
+import { Token } from "../models/token.model.js";
 import { Request, Response } from "express";
 import crypto from "crypto";
 import { sendVerificationEmail } from "../lib/utils/nodemailer.js";
+import { attachCookies } from "../lib/utils/jwt.js";
 
 // CONTROLLERS
 export const registerUser = async (req: Request, res: Response) => {
@@ -79,8 +81,47 @@ export const loginUser = async (req: Request, res: Response) => {
 			data: { message: "user account requires email verification" }
 		});
 	}
+
 	const tokenUser = { name: user.username, userId: user._id, role: user.role };
+	let refreshToken = "";
+
+	const existingToken = await Token.findOne({ user: user._id });
+	if (existingToken) {
+		const { isValid } = existingToken;
+		if (!isValid) {
+			return res.status(401).json({
+				success: false,
+				data: { message: "invalid credentials" }
+			});
+		}
+		refreshToken = existingToken.refreshToken;
+		attachCookies({ res, user: tokenUser, refreshToken });
+		res.status(200).json({ success: true, data: { user: tokenUser } });
+		return;
+	}
+
+	refreshToken = crypto.randomBytes(40).toString("hex");
+	const userAgent = req.headers["user-agent"];
+	const ip = req.ip;
+	const userToken = { refreshToken, ip, userAgent, user: user._id };
+
+	await Token.create(userToken);
+
+	attachCookies({ res, user: tokenUser, refreshToken });
 	res.status(200).json({ success: true, data: { user: tokenUser } });
+};
+
+export const logoutUser = async (req: Request, res: Response) => {
+	await Token.findOneAndDelete({ user: req.user.userId });
+	res.cookie("accessToken", "logout", {
+		httpOnly: true,
+		expires: new Date(Date.now())
+	});
+	res.cookie("refreshToken", "logout", {
+		httpOnly: true,
+		expires: new Date(Date.now())
+	});
+	res.status(200).json({ success: true, data: { message: "user logged out" } });
 };
 
 export const checkUser = async (req: Request, res: Response) => {

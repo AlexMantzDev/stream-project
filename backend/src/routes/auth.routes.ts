@@ -4,8 +4,10 @@ import {
 	registerUser,
 	loginUser,
 	checkUser,
-	verifyEmail
+	verifyEmail,
+	logoutUser
 } from "../controllers/auth.controllers.js";
+import { authenticateUser } from "../middleware/auth.middleware.js";
 
 export const router = express.Router();
 
@@ -13,4 +15,5 @@ export const router = express.Router();
 router.post("/checkuser", checkUser);
 router.post("/register", registerUser);
 router.post("/login", loginUser);
+router.delete("/logout", authenticateUser, logoutUser);
 router.post("/verify", verifyEmail);
