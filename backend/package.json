@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "npx tsc",
 		"start": "node ./dist/server.js",
-		"serve": "npx tsc -w & nodemon ./dist/server.js",
+		"serve": "npx tsc -w & nodemon ./dist/src/server.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],

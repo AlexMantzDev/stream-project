@@ -13,4 +13,6 @@ exports.router.post("/register", auth_controllers_js_1.registerUser);
 exports.router.post("/login", auth_controllers_js_1.loginUser);
 exports.router.delete("/logout", auth_middleware_js_1.authenticateUser, auth_controllers_js_1.logoutUser);
 exports.router.post("/verify", auth_controllers_js_1.verifyEmail);
+exports.router.post("/reset-password", auth_controllers_js_1.resetPass);
+exports.router.post("/forgot-password", auth_controllers_js_1.forgotPass);
 //# sourceMappingURL=auth.routes.js.map

@@ -20,7 +20,10 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/auth", auth_routes_js_1.router);
 app.use("/broadcast", broadcast_routes_js_1.router);
-app.use("/", express_1.default.static(path_1.default.join(__dirname, "../public/browser")));
+app.use("/", express_1.default.static(path_1.default.join(__dirname, "../../public/browser")));
+app.get("*", (req, res) => {
+    res.sendFile(path_1.default.resolve(__dirname, "../../public/browser/index.html"));
+});
 async function start() {
     try {
         await (0, mongo_connect_js_1.connectToMongo)(process.env.MONGO_URI);

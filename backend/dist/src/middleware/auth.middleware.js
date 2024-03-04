@@ -27,7 +27,7 @@ async function authenticateUser(req, res, next) {
         }
         else {
             (0, jwt_2.attachCookies)({
-                res: Response,
+                res,
                 user: payload.user,
                 refreshToken: existingToken.refreshToken
             });

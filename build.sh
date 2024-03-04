@@ -4,4 +4,4 @@ npm run build;
 cd ../frontend;
 npx ng build;
 cd ../;
-docker-compose build;
+docker compose build;
