@@ -13,8 +13,23 @@ const auth_routes_js_1 = require("./routes/auth.routes.js");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-const port = process.env.EXPRESS_PORT || 8080;
-app.use((0, cors_1.default)());
+let port;
+let serverUrlString;
+let mongoUrlString;
+if (process.env.NODE_ENV === "production") {
+    serverUrlString = `https://${process.env.PROD_ORIGIN}:${process.env.PROD_EXPRESS_PORT}`;
+    mongoUrlString = process.env.PROD_MONGO_URI;
+    port = process.env.PROD_EXPRESS_PORT;
+}
+else {
+    serverUrlString = `http://localhost:${process.env.DEV_EXPRESS_PORT}`;
+    mongoUrlString = process.env.DEV_MONGO_URI;
+    port = process.env.DEV_EXPRESS_PORT;
+}
+let corsOptions = {
+    origin: '*'
+};
+app.use((0, cors_1.default)(corsOptions));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
@@ -26,9 +41,9 @@ app.get("*", (req, res) => {
 });
 async function start() {
     try {
-        await (0, mongo_connect_js_1.connectToMongo)(process.env.MONGO_URI);
+        await (0, mongo_connect_js_1.connectToMongo)(mongoUrlString);
         app.listen(port, () => {
-            console.log(`listening on http://0.0.0.0:${port} ...`);
+            console.log(`listening on ${serverUrlString} ...`);
         });
     }
     catch (err) {
