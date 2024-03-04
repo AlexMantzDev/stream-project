@@ -27,9 +27,9 @@ app.use(express.urlencoded({ extended: true }));
 // app.use("/chat", chatRoutes);
 app.use("/auth", authRoutes);
 app.use("/broadcast", broadcastRoutes);
-app.use("/", express.static(path.join(__dirname, "../../public/browser")));
+app.use("/", express.static(path.join(__dirname, "../public/browser")));
 app.get("*", (req, res) => {
-	res.sendFile(path.resolve(__dirname, "../../public/browser/index.html"));
+	res.sendFile(path.resolve(__dirname, "../public/browser/index.html"));
 });
 
 // METHODS
