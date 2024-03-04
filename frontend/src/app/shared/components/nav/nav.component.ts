@@ -9,4 +9,6 @@ import { RouterLink } from "@angular/router";
 	templateUrl: "./nav.component.html",
 	styleUrl: "./nav.component.scss"
 })
-export class NavComponent {}
+export class NavComponent {
+	isLoggedIn = false;
+}

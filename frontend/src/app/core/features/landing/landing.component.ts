@@ -3,6 +3,7 @@ import { TrendingComponent } from "./trending/trending.component";
 import { SuggestedCategoryShowcaseComponent } from "./suggested-category-showcase/suggested-category-showcase.component";
 import { SuggestedStreamShowcaseComponent } from "./suggested-stream-showcase/suggested-stream-showcase.component";
 import { NewReleasesShowcaseComponent } from "./new-releases-showcase/new-releases-showcase.component";
+import { NavComponent } from "../../../shared/components/nav/nav.component";
 
 @Component({
 	selector: "app-landing",
@@ -11,7 +12,8 @@ import { NewReleasesShowcaseComponent } from "./new-releases-showcase/new-releas
 		TrendingComponent,
 		SuggestedCategoryShowcaseComponent,
 		SuggestedStreamShowcaseComponent,
-		NewReleasesShowcaseComponent
+		NewReleasesShowcaseComponent,
+		NavComponent
 	],
 	templateUrl: "./landing.component.html",
 	styleUrl: "./landing.component.scss"

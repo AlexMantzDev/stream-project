@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { debounce } from "../../lib/utils/debounce.utils";
-import { environment } from "../../../../environments/env";
+import { environment } from "../../../../env/env";
 
 @Injectable({
 	providedIn: "root"

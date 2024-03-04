@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
-import { AuthComponent } from "../auth.component";
 
 import { DbService } from "../../../shared/services/db/db.service";
 
@@ -19,7 +18,6 @@ export class RegisterComponent {
 	// Constructor
 	constructor(
 		public dbService: DbService,
-		public authComponent: AuthComponent,
 		public router: Router
 	) {}
 
@@ -36,6 +34,6 @@ export class RegisterComponent {
 	// Methods
 	onSubmit() {
 		console.log(this.registerUserForm);
-		this.router.navigate(["auth", "verify"]);
+		this.router.navigate(["verify"]);
 	}
 }

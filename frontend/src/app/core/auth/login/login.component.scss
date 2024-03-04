@@ -1,21 +1,29 @@
-a {
-	cursor: pointer;
-	padding: 8px;
-	text-decoration: none;
-	color: black;
-	margin-left: auto;
-	margin-right: 0;
-
-	&:hover {
-		color: blue;
+.card {
+	max-width: 500px;
+	margin: 32px auto;
+	border-radius: 1.5rem;
+	padding: 16px;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: white;
+	box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+	& h2 {
+		font-size: 1.5em;
+		font-weight: 600;
+		margin: 8px auto;
+		text-align: center;
 	}
-}
+	& a {
+		cursor: pointer;
+		padding: 8px;
+		text-decoration: none;
+		color: black;
+		margin-left: auto;
+		margin-right: 0;
 
-h2 {
-	font-size: 1.5em;
-	font-weight: 600;
-	margin: 8px auto;
-	text-align: center;
+		&:hover {
+			color: blue;
+		}
+	}
 }
 
 .form {

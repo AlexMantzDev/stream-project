@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
 import { RegisterComponent } from "../register/register.component";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { environment } from "../../../../environments/env";
+import { environment } from "../../../../env/env";
 
 interface IUser {
 	email: String;
