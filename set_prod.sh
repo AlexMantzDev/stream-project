@@ -7,4 +7,3 @@ sed -i 's/environment: "development"/environment: "production"/' "./src/env/env.
 npx ng build;
 cd ../;
 docker compose build;
-docker compose up;

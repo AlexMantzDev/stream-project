@@ -27,7 +27,7 @@ const UserSchema = new mongoose_1.Schema({
     password: {
         type: String,
         required: [true, "please provide a password"],
-        minlength: 16
+        minlength: 6
     },
     role: {
         type: String,
@@ -47,11 +47,11 @@ const UserSchema = new mongoose_1.Schema({
         type: Date
     }
 });
-UserSchema.pre("save", async function (password) {
+UserSchema.pre("save", async function () {
     if (!this.isModified("password"))
         return;
     const salt = await bcryptjs_1.default.genSalt(10);
-    this.password = await bcryptjs_1.default.hash(password, salt);
+    this.password = await bcryptjs_1.default.hash(this.password, salt);
 });
 UserSchema.methods.comparePass = async function (candidatePass) {
     const isMatch = await bcryptjs_1.default.compare(candidatePass, this.password);

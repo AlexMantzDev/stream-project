@@ -60,12 +60,25 @@ const registerUser = async (req, res) => {
             data: { message: "passwords do not match" }
         });
     }
-    const user = await user_models_js_1.Users.create({ email, password1, username, role, verificationToken });
+    const user = await user_models_js_1.Users.create({
+        email,
+        password: password1,
+        username,
+        role,
+        verificationToken
+    });
+    let serverUrlString;
+    if (process.env.NODE_ENV === "production") {
+        serverUrlString = `https://${process.env.PROD_ORIGIN}`;
+    }
+    else {
+        serverUrlString = `http://localhost:${process.env.DEV_FRONTEND_PORT}`;
+    }
     await (0, nodemailer_js_1.sendVerificationEmail)({
         username: user.username,
         email: user.email,
         verificationToken: user.verificationToken,
-        origin: process.env.ORIGIN
+        url: serverUrlString
     });
     res.status(200).json({ success: true, data: { user } });
 };
@@ -78,6 +91,7 @@ const loginUser = async (req, res) => {
             data: { message: "please provide email and password" }
         });
     }
+    console.log(req.body);
     const user = await user_models_js_1.Users.findOne({ email });
     if (!user) {
         return res.status(401).json({
@@ -85,6 +99,7 @@ const loginUser = async (req, res) => {
             data: { message: "invalid username or password" }
         });
     }
+    console.log(user);
     const isPassCorrect = await user.comparePass(password);
     if (!isPassCorrect) {
         return res.status(401).json({
@@ -110,6 +125,7 @@ const loginUser = async (req, res) => {
             });
         }
         refreshToken = existingToken.refreshToken;
+        console.log(refreshToken);
         (0, jwt_js_1.attachCookies)({ res, user: tokenUser, refreshToken });
         res.status(200).json({ success: true, data: { user: tokenUser } });
         return;
@@ -163,13 +179,20 @@ const forgotPass = async (req, res) => {
         res.status(400).json({ success: false, data: { message: "email not valid" } });
     }
     const user = await user_models_js_1.Users.findOne({ email });
+    let serverUrlString;
+    if (process.env.NODE_ENV === "production") {
+        serverUrlString = `https://${process.env.PROD_ORIGIN}:${process.env.PROD_EXPRESS_PORT}`;
+    }
+    else {
+        serverUrlString = `http://localhost:${process.env.DEV_FRONTEND_PORT}`;
+    }
     if (user) {
         const passwordToken = crypto_1.default.randomBytes(70).toString("hex");
         await (0, nodemailer_js_1.sendResetPasswordEmail)({
             username: user.username,
             email: user.email,
             passwordToken: passwordToken,
-            origin: `https://${process.env.ORIGIN}`
+            url: serverUrlString
         });
         const tenMinutes = 1000 * 60 * 10;
         const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes);

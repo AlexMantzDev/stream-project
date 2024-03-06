@@ -39,7 +39,7 @@ const UserSchema = new Schema<IUserDoc>({
 	password: {
 		type: String,
 		required: [true, "please provide a password"],
-		minlength: 16
+		minlength: 6
 	},
 	role: {
 		type: String,
@@ -60,10 +60,10 @@ const UserSchema = new Schema<IUserDoc>({
 	}
 });
 
-UserSchema.pre("save", async function (this: any, password) {
+UserSchema.pre("save", async function () {
 	if (!this.isModified("password")) return;
 	const salt = await bcrypt.genSalt(10);
-	this.password = await bcrypt.hash(password, salt);
+	this.password = await bcrypt.hash(this.password, salt);
 });
 
 UserSchema.methods.comparePass = async function (candidatePass) {

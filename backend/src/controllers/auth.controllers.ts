@@ -42,13 +42,27 @@ export const registerUser = async (req: Request, res: Response) => {
 			data: { message: "passwords do not match" }
 		});
 	}
-	const user = await Users.create({ email, password1, username, role, verificationToken });
+	const user = await Users.create({
+		email,
+		password: password1,
+		username,
+		role,
+		verificationToken
+	});
+
+	let serverUrlString;
+
+	if (process.env.NODE_ENV === "production") {
+		serverUrlString = `https://${process.env.PROD_ORIGIN}`;
+	} else {
+		serverUrlString = `http://localhost:${process.env.DEV_FRONTEND_PORT}`;
+	}
 
 	await sendVerificationEmail({
 		username: user.username,
 		email: user.email,
 		verificationToken: user.verificationToken,
-		origin: process.env.ORIGIN
+		url: serverUrlString
 	});
 
 	res.status(200).json({ success: true, data: { user } });
@@ -62,6 +76,7 @@ export const loginUser = async (req: Request, res: Response) => {
 			data: { message: "please provide email and password" }
 		});
 	}
+	console.log(req.body);
 	const user = await Users.findOne({ email });
 	if (!user) {
 		return res.status(401).json({
@@ -69,6 +84,7 @@ export const loginUser = async (req: Request, res: Response) => {
 			data: { message: "invalid username or password" }
 		});
 	}
+	console.log(user);
 	const isPassCorrect = await user.comparePass(password);
 	if (!isPassCorrect) {
 		return res.status(401).json({
@@ -96,6 +112,7 @@ export const loginUser = async (req: Request, res: Response) => {
 			});
 		}
 		refreshToken = existingToken.refreshToken;
+		console.log(refreshToken);
 		attachCookies({ res, user: tokenUser, refreshToken });
 		res.status(200).json({ success: true, data: { user: tokenUser } });
 		return;
@@ -154,13 +171,22 @@ export const forgotPass = async (req: Request, res: Response) => {
 		res.status(400).json({ success: false, data: { message: "email not valid" } });
 	}
 	const user = await Users.findOne({ email });
+
+	let serverUrlString;
+
+	if (process.env.NODE_ENV === "production") {
+		serverUrlString = `https://${process.env.PROD_ORIGIN}:${process.env.PROD_EXPRESS_PORT}`;
+	} else {
+		serverUrlString = `http://localhost:${process.env.DEV_FRONTEND_PORT}`;
+	}
+
 	if (user) {
 		const passwordToken = crypto.randomBytes(70).toString("hex");
 		await sendResetPasswordEmail({
 			username: user.username,
 			email: user.email,
 			passwordToken: passwordToken,
-			origin: `https://${process.env.ORIGIN}`
+			url: serverUrlString
 		});
 		const tenMinutes = 1000 * 60 * 10;
 		const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes);
@@ -216,7 +242,6 @@ export const verifyEmail = async (req: Request, res: Response) => {
 	user.isVerified = true;
 	user.verified = Date.now();
 	user.verificationToken = "";
-
 	await user.save();
 
 	return res.status(200).json({

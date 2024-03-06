@@ -3,6 +3,14 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angula
 import { Router, RouterLink } from "@angular/router";
 
 import { DbService } from "../../../shared/services/db/db.service";
+import { env } from "../../../../env/env";
+
+interface IUser {
+	username: String;
+	email: String;
+	password1: String;
+	password2: String;
+}
 
 @Component({
 	selector: "app-register",
@@ -14,6 +22,12 @@ import { DbService } from "../../../shared/services/db/db.service";
 export class RegisterComponent {
 	// Constants
 	public registerUserForm: FormGroup;
+	user: IUser = {
+		username: undefined,
+		email: undefined,
+		password1: undefined,
+		password2: undefined
+	};
 
 	// Constructor
 	constructor(
@@ -32,8 +46,32 @@ export class RegisterComponent {
 	}
 
 	// Methods
-	onSubmit() {
-		console.log(this.registerUserForm);
-		this.router.navigate(["verify"]);
+	async onSubmit() {
+		let origin;
+		let protocol;
+		if (env.environment === "production") {
+			origin = env.prod_origin;
+			protocol = `https`;
+		} else {
+			origin = env.dev_backend_origin;
+			protocol = `http`;
+		}
+		this.user.username = this.registerUserForm.get("username").value;
+		this.user.email = this.registerUserForm.get("email").value;
+		this.user.password1 = this.registerUserForm.get("password1").value;
+		this.user.password2 = this.registerUserForm.get("password2").value;
+
+		try {
+			await fetch(`${protocol}://${origin}/auth/register`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(this.user)
+			});
+		} catch (error) {
+			console.log(error);
+		}
+		this.router.navigate(["email"]);
 	}
 }

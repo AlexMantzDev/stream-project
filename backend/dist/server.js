@@ -26,11 +26,8 @@ else {
     mongoUrlString = process.env.DEV_MONGO_URI;
     port = process.env.DEV_EXPRESS_PORT;
 }
-let corsOptions = {
-    origin: '*'
-};
-app.use((0, cors_1.default)(corsOptions));
-app.use((0, cookie_parser_1.default)());
+app.use((0, cors_1.default)());
+app.use((0, cookie_parser_1.default)(process.env.CP_SECRET));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/auth", auth_routes_js_1.router);

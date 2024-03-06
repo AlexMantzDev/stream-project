@@ -30,14 +30,14 @@ export class LoginComponent implements OnInit {
 	}
 
 	async onSubmit() {
-		let origin
-		let protocol
-		if(env.environment === "production") {
-			origin = env.prod_origin
-			protocol = `https`
+		let origin;
+		let protocol;
+		if (env.environment === "production") {
+			origin = env.prod_origin;
+			protocol = `https`;
 		} else {
-			origin = env.dev_origin
-			protocol = `http`
+			origin = env.dev_backend_origin;
+			protocol = `http`;
 		}
 		this.user.email = this.loginUserForm.get("email").value;
 		this.user.password = this.loginUserForm.get("password").value;
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
 			await fetch(`${protocol}://${origin}/auth/login`, {
 				method: "POST",
 				headers: {
-					'Content-Type': 'application/json'
+					"Content-Type": "application/json"
 				},
 				body: JSON.stringify(this.user)
 			});

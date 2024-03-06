@@ -18,11 +18,11 @@ export class DbService {
 	}
 
 	checkUser(field: string, userInput: string) {
-		let origin
-		if(env.environment === "production") {
-			origin = env.prod_origin
+		let origin;
+		if (env.environment === "production") {
+			origin = env.prod_origin;
 		} else {
-			origin = env.dev_origin
+			origin = env.dev_backend_origin;
 		}
 		const url: string = `https://${origin}/auth/checkuser`;
 		const body: object = { field: field, param: userInput };

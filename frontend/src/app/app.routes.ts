@@ -4,6 +4,7 @@ import { LandingComponent } from "./core/features/landing/landing.component";
 import { LoginComponent } from "./core/auth/login/login.component";
 import { VerifyComponent } from "./core/auth/verify/verify.component";
 import { NotFoundComponent } from "./shared/components/not-found/not-found.component";
+import { EmailComponent } from "./core/auth/email/email.component";
 
 export const routes: Routes = [
 	{ path: "", component: LandingComponent },
@@ -14,6 +15,7 @@ export const routes: Routes = [
 		component: RegisterComponent
 	},
 	{ path: "verify", component: VerifyComponent },
+	{ path: "email", component: EmailComponent },
 
 	{ path: "**", component: NotFoundComponent }
 ];

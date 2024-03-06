@@ -15,25 +15,22 @@ dotenv.config();
 
 // CONSTANTS
 const app: Express = express();
-let port
-let serverUrlString
-let mongoUrlString
-if(process.env.NODE_ENV === "production") {
+let port;
+let serverUrlString;
+let mongoUrlString;
+if (process.env.NODE_ENV === "production") {
 	serverUrlString = `https://${process.env.PROD_ORIGIN}:${process.env.PROD_EXPRESS_PORT}`;
-	mongoUrlString = process.env.PROD_MONGO_URI
-	port = process.env.PROD_EXPRESS_PORT
+	mongoUrlString = process.env.PROD_MONGO_URI;
+	port = process.env.PROD_EXPRESS_PORT;
 } else {
-	serverUrlString = `http://localhost:${process.env.DEV_EXPRESS_PORT}`
-	mongoUrlString = process.env.DEV_MONGO_URI
-	port = process.env.DEV_EXPRESS_PORT
+	serverUrlString = `http://localhost:${process.env.DEV_EXPRESS_PORT}`;
+	mongoUrlString = process.env.DEV_MONGO_URI;
+	port = process.env.DEV_EXPRESS_PORT;
 }
 
 // MIDDLEWARE
-let corsOptions = {
-	origin: '*'
-}
-app.use(cors(corsOptions));
-app.use(cookieParser());
+app.use(cors());
+app.use(cookieParser(process.env.CP_SECRET));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

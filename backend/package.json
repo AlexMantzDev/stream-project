@@ -5,7 +5,7 @@
 	"main": "index.ts",
 	"scripts": {
 		"build": "npx tsc",
-		"start": "node ./dist/server.js",
+		"start": "npx tsc && node ./dist/server.js",
 		"serve": "npx tsc -w & nodemon ./dist/server.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
@@ -35,7 +35,6 @@
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"nodemon": "^3.0.3",
-		"prettier": "^3.2.5",
-		"tslib": "^2.6.2"
+		"prettier": "^3.2.5"
 	}
 }
